@@ -62,12 +62,12 @@ public:
 	 @s: the string to be located.
 	 @len: the length (in characters) of the string s.
 	 */
-	uint32_t locate(const unsigned char *s, uint32_t len);
+	size_t locate(const unsigned char *s, size_t len);
 
 	/** Returns the string identified by id.
 	 @id: the identifier to be extracted.
 	 */
-	unsigned char * extract(uint32_t id);
+	unsigned char * extract(size_t id);
 
 	void freeString(const unsigned char *str);
 
@@ -129,15 +129,14 @@ protected:
 	 @len: the length (in characters) of the string s.
 	 @return: the ID for 's' or 0 if it is not exist.
 	 */
-	unsigned int locateInBlock(size_t block, const unsigned char *s,
-			unsigned int len);
+	size_t locateInBlock(size_t block, const unsigned char *s, size_t len);
 
 	/** Extracts the o-th string in the given 'block'.
 	 @block: block to be accesed.
 	 @o: internal offset for the required string in the block.
 	 @return: the extracted string.
 	 */
-	unsigned char *extractInBlock(unsigned int block, unsigned int o);
+	unsigned char *extractInBlock(size_t block, size_t o);
 
 	/** Obtains the length of the long common prefix (lcp) of str1 and str2.
 	 @str1: first string in the comparison.
@@ -427,8 +426,8 @@ public:
 			return hasnext;
 	}
 
-	unsigned int next() {
-		unsigned int currentSolution = (block*pfc->blocksize)+idInBlock;
+	size_t next() {
+		size_t currentSolution = (block*pfc->blocksize)+idInBlock;
 		// prepare for the following solution
 		hasnext=false;
 		while (!hasnext&&!terminate){

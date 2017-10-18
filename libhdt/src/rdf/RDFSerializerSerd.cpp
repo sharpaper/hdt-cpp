@@ -106,8 +106,8 @@ SerdNode getTerm(const string &str, SerdNode* datatype, SerdNode* lang)
 }
 
 void RDFSerializerSerd::serialize(IteratorTripleString *it,
-                                  ProgressListener     *listener,
-                                  unsigned int          totalTriples)
+                                  ProgressListener *listener,
+                                  size_t totalTriples)
 {
 	for (unsigned n = 0; it->hasNext(); ++n) {
 		const TripleString *ts = it->next();

@@ -396,6 +396,7 @@ void BasicHDT::fillHeader(const string& baseUri) {
 	time(&now);
 	struct tm* today = localtime(&now);
 	strftime(date, 40, "%Y-%m-%dT%H:%M:%S%z", today);
+  // changing the date representation
 	char *tzm = date+strlen(date) - 2;
 	memmove(tzm+1, tzm, 3);
 	*tzm = ':';
@@ -533,30 +534,30 @@ void BasicHDT::loadTriplesFromHDTs(const char** fileNames, size_t numFiles, cons
 	        Dictionary *dict = hdt.getDictionary();
 
 	        // Create mapping arrays
-	        unsigned int nsubjects = dict->getNsubjects();
+            size_t nsubjects = dict->getNsubjects();
 	        LogSequence2 subjectMap(bits(dictionary->getNsubjects()), nsubjects);
 	        subjectMap.resize(nsubjects);
-	        for(unsigned int i=0;i<nsubjects;i++) {
-	        	const string str = dict->idToString(i+1, SUBJECT);
-	        	unsigned int newid = dictionary->stringToId(str, SUBJECT);
+            for(size_t i=0;i<nsubjects;i++) {
+	        	  const string str = dict->idToString(i+1, SUBJECT);
+              size_t newid = dictionary->stringToId(str, SUBJECT);
 	        	subjectMap.set(i, newid);
 	        }
 
-	        unsigned int npredicates = dict->getNpredicates();
+            size_t npredicates = dict->getNpredicates();
 	        LogSequence2 predicateMap(bits(dictionary->getNpredicates()), npredicates);
 	        predicateMap.resize(npredicates);
-	        for(unsigned int i=0;i<npredicates;i++) {
-	        	const string str = dict->idToString(i+1, PREDICATE);
-	        	unsigned int newid = dictionary->stringToId(str, PREDICATE);
+            for(size_t i=0;i<npredicates;i++) {
+	        	  const string str = dict->idToString(i+1, PREDICATE);
+              size_t newid = dictionary->stringToId(str, PREDICATE);
 	        	predicateMap.set(i, newid);
 	        }
 
-	        unsigned int nobjects = dict->getNobjects();
+            size_t nobjects = dict->getNobjects();
 	        LogSequence2 objectMap(bits(dictionary->getNobjects()), nobjects);
 	        objectMap.resize(nobjects);
-	        for(unsigned int i=0;i<nobjects;i++) {
-	        	const string str = dict->idToString(i+1, OBJECT);
-	        	unsigned int newid = dictionary->stringToId(str, OBJECT);
+          for(size_t i=0;i<nobjects;i++) {
+	          const string str = dict->idToString(i+1, OBJECT);
+            size_t newid = dictionary->stringToId(str, OBJECT);
 	        	objectMap.set(i, newid);
 	        }
 
@@ -572,9 +573,9 @@ void BasicHDT::loadTriplesFromHDTs(const char** fileNames, size_t numFiles, cons
 	        	TripleID *tid = it->next();
 
 	        	newTid.setAll(
-	        			(unsigned int)subjectMap.get(tid->getSubject()-1),
-	        			(unsigned int)predicateMap.get(tid->getPredicate()-1),
-	        			(unsigned int)objectMap.get(tid->getObject()-1)
+                        subjectMap.get(tid->getSubject()-1),
+                        predicateMap.get(tid->getPredicate()-1),
+                        objectMap.get(tid->getObject()-1)
 	        			);
 
 	        	triplesList->insert(newTid);

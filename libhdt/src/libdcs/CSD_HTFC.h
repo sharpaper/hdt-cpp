@@ -76,12 +76,12 @@ class CSD_HTFC : public CSD
 	@s: the string to be located.
 	@len: the length (in characters) of the string s.
     */
-    uint32_t locate(const uchar *s, uint32_t len);
+    size_t locate(const uchar *s, size_t len);
 
     /** Returns the string identified by id.
 	@id: the identifier to be extracted.
     */
-    uchar * extract(uint32_t id);
+    uchar * extract(size_t id);
 
     void freeString(const unsigned char *str);
 
@@ -109,11 +109,11 @@ class CSD_HTFC : public CSD
 	@fp: pointer to the file storing a CSD_HTFC structure. */
     static CSD * load(istream & fp);
 
-    void fillSuggestions(const char *base, vector<string> &out, int maxResults);
-
     hdt::IteratorUCharString *getSuggestions(const char *prefix);
-
+ 
     hdt::IteratorUInt *getIDSuggestions(const char *prefix);
+
+    void fillSuggestions(const char *base, vector<string> &out, int maxResults);
 
     hdt::IteratorUCharString *listAll() { throw std::logic_error("Not Implemented"); }
 

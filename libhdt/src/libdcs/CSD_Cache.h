@@ -46,8 +46,8 @@ using namespace std;
 namespace csd
 {
 
-typedef cache::lru_cache<uint32_t, string> LRU_Int;
-typedef cache::lru_cache<char *, uint32_t> LRU_Str;
+typedef cache::lru_cache<size_t, string> LRU_Int;
+typedef cache::lru_cache<char *, size_t> LRU_Str;
 
 class CSD_Cache : public CSD
 {
@@ -68,12 +68,12 @@ private:
 	@s: the string to be located.
 	@len: the length (in characters) of the string s.
     */
-    uint32_t locate(const unsigned char *s, uint32_t len);
+    size_t locate(const unsigned char *s, size_t len);
 
     /** Returns the string identified by id.
 	@id: the identifier to be extracted.
     */
-    unsigned char * extract(uint32_t id);
+    unsigned char * extract(size_t id);
 
     void freeString(const unsigned char *str);
 
@@ -82,7 +82,7 @@ private:
 	@dict: the plain uncompressed dictionary.
 	@return: number of total symbols in the dictionary.
     */
-    unsigned int decompress(unsigned char **dict);
+    size_t decompress(unsigned char **dict);
 
     hdt::IteratorUCharString *listAll() { return child->listAll(); }
 
@@ -102,20 +102,23 @@ private:
 	@fp: pointer to the file storing a CSD_PFC structure. */
     static CSD * load(istream & fp);
 
-    // Search for terms by prefix. It returns a vector of a given maximum size "maxResults"
-    void fillSuggestions(const char *prefix, vector<string> &out, int maxResults) {
-    	child->fillSuggestions(prefix, out, maxResults);
+    // Search for terms by prefix. It returns a vector of a given
+    // maximum size "maxResults"
+    void fillSuggestions(const char *base, vector<string> &out, int maxResults) {
+    	child->fillSuggestions(base, out, maxResults);
     }
 
-	// Search for terms by prefix. It returns an iterator of all results in the dictionary
-	hdt::IteratorUCharString *getSuggestions(const char *prefix){
-		return child->getSuggestions(prefix);
-	}
-
-	// Search for terms by prefix. It returns an iterator of all results in the dictionary, by ID
-		hdt::IteratorUInt *getIDSuggestions(const char *prefix){
-			return child->getIDSuggestions(prefix);
-		}
+    // Search for terms by prefix. It returns an iterator of all
+    // results in the dictionary
+ 	  hdt::IteratorUCharString *getSuggestions(const char *prefix){
+ 		  return child->getSuggestions(prefix);
+ 	  }
+ 
+ 	  // Search for terms by prefix. It returns an iterator of all
+ 	  // results in the dictionary, by ID
+ 		hdt::IteratorUInt *getIDSuggestions(const char *prefix){
+ 			return child->getIDSuggestions(prefix);
+ 		}
 
     CSD *getChild() {
     	return child;
