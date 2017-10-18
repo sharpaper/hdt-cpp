@@ -5,7 +5,6 @@
  *      Author: mck
  */
 
-
 #include "TripleIDStringIterator.hpp"
 
 namespace hdt {
@@ -45,12 +44,13 @@ void TripleIDStringIterator::goToStart() {
 size_t TripleIDStringIterator::estimatedNumResults() {
 	return iterator->estimatedNumResults();
 }
+
 ResultEstimationType TripleIDStringIterator::numResultEstimation() {
 	return iterator->numResultEstimation();
 }
-void TripleIDStringIterator::skip(unsigned int pos) {
+
+void TripleIDStringIterator::skip(size_t pos) {
 	iterator->skip(pos);
 }
 
 }
-
